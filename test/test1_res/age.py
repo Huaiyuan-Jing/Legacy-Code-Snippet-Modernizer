@@ -1,17 +1,17 @@
+# 文件：age.py (源于 Python 2)
 def categorize_by_age(age):
-    """Categorize a person by their age."""
-    if not isinstance(age, (int, float)):
-        return f"Invalid age: {age}"
-    if 0 <= age <= 9:
+    # Python 2 中的逻辑实现
+    if age >= 0 and age <= 9:
         return "Child"
-    elif 10 <= age <= 18:
+    elif age > 9 and age <= 18:
         return "Adolescent"
-    elif 19 <= age <= 65:
+    elif age > 18 and age <= 65:
         return "Adult"
-    elif 66 <= age <= 150:
+    elif age > 65 and age <= 150:
         return "Golden age"
     else:
-        return f"Invalid age: {age}"
+        return "Invalid age: %s" % age
 
 if __name__ == "__main__":
-    print(categorize_by_age(5))
+    # Python 2 中打印
+    print categorize_by_age(5)

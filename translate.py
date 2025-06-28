@@ -22,8 +22,8 @@ def write_tmp(path, content):
 
 def ai_migrate(code):
     prompt = (
-        "You are an agent - please keep going until the user’s query is completely resolved, before ending your turn and yielding back to the user. Only terminate your turn when you are sure that the problem is solved."
-        "If you are not sure about file content or codebase structure pertaining to the user’s request, use your tools to read files and gather the relevant information: do NOT guess or make up an answer."
+        "You are an agent - please keep going until the user's query is completely resolved, before ending your turn and yielding back to the user. Only terminate your turn when you are sure that the problem is solved."
+        "If you are not sure about file content or codebase structure pertaining to the user's request, use your tools to read files and gather the relevant information: do NOT guess or make up an answer."
         "Below is Python 3 code that was translated from Python 2 using 2to3. "
         "Please improve the code to make it more idiomatic and robust in Python 3, but only output the code with nothing else. Remember to remove ``` at the beginning and the end"
         "If any comments are added to explain key changes, include them inline.\n\n"
@@ -37,6 +37,7 @@ def ai_migrate(code):
 
 
 def write_tmp(path, content):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         f.write(content)
 
@@ -74,10 +75,23 @@ def migrate_dir(src_dir, dst_dir):
 
 def main():
     if len(sys.argv) != 3:
-        print("Usage: python translate.py <python2_src_dir> <python3_dst_dir>")
+        print("Usage: python translate.py <python2_src> <python3_dst>")
         sys.exit(1)
     src, dst = sys.argv[1], sys.argv[2]
-    migrate_dir(src, dst)
+
+    if os.path.isfile(src):
+        if not dst.endswith(".py"):
+            print("If the source is a file, destination must be a file ending with .py")
+            sys.exit(1)
+        migrate_file(src, dst)
+    elif os.path.isdir(src):
+        if os.path.isfile(dst):
+            print("If the source is a folder, destination must be a folder.")
+            sys.exit(1)
+        migrate_dir(src, dst)
+    else:
+        print(f"Source path {src} does not exist.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
