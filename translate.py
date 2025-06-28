@@ -22,6 +22,8 @@ def write_tmp(path, content):
 
 def ai_migrate(code):
     prompt = (
+        "You are an agent - please keep going until the user’s query is completely resolved, before ending your turn and yielding back to the user. Only terminate your turn when you are sure that the problem is solved."
+        "If you are not sure about file content or codebase structure pertaining to the user’s request, use your tools to read files and gather the relevant information: do NOT guess or make up an answer."
         "Below is Python 3 code that was translated from Python 2 using 2to3. "
         "Please improve the code to make it more idiomatic and robust in Python 3, but only output the code with nothing else. Remember to remove ``` at the beginning and the end"
         "If any comments are added to explain key changes, include them inline.\n\n"
